@@ -1,0 +1,12 @@
+# Ant build output
+build/
+dist/
+
+# NOTE: lib/ is intentionally NOT excluded.
+# This probe is purpose-built for Mode-3 path scanning: all binaries
+# under lib/ are committed so Mend can fingerprint them directly.
+# Do NOT add lib/ here.
+
+# OS metadata
+.DS_Store
+Thumbs.db

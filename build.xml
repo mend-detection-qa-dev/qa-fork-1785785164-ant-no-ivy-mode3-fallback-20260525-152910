@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ant-no-ivy-mode3-fallback — Mode-3 native probe.
+
+  NO Ivy.  No <ivy:resolve>, no <ivy:cachepath>, no ivy.xml.
+  All dependencies are pre-committed JARs (and other binary formats)
+  under lib/.  Mend detects them via Mode-3 default path scan.
+
+  Catalog patterns covered:
+    E3  (ant-build-xml-without-ivy)          — build.xml with <path id="lib.cp">
+    G6.b (ant-default-path-scan-mixed-extensions) — lib/ contains jar/war/zip/so
+    G6.c (ant-path-id-includes-wildcard)     — whitesource.config ant.pathIdIncludes=lib.*
+-->
+<project name="ant-no-ivy-mode3-fallback" default="compile" basedir=".">
+
+    <!-- ============================================================
+         Classpath: all JARs in lib/ (wildcard includes).
+         This is the primary Mode-3 artifact reference that Mend
+         detects via the ant.pathIdIncludes=lib.* filter in
+         whitesource.config.
+    ============================================================ -->
+    <path id="lib.cp">
+        <fileset dir="lib" includes="*.jar"/>
+    </path>
+
+    <!-- Dummy compile target — no real Java sources in this probe.
+         The target exists so `ant compile` does not error; Mend's
+         scanner does not execute Ant, it only reads build.xml for
+         path declarations. -->
+    <target name="compile" description="No-op compile (probe has no sources)">
+        <echo message="lib.cp classpath contains: ${toString:lib.cp}"/>
+    </target>
+
+</project>

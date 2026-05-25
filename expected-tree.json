@@ -1,0 +1,129 @@
+{
+  "_schema_version": "1.0",
+  "_probe_id": "ant-no-ivy-mode3-fallback-20260525-152910",
+  "_pm": "ant",
+  "_pm_version_tested": "ant-1.10.x",
+  "_scanner_mode": "mode-3-default-path-scan",
+  "_patterns": [
+    "ant-build-xml-without-ivy",
+    "ant-default-path-scan-mixed-extensions",
+    "ant-path-id-includes-wildcard"
+  ],
+  "_catalog_ids": ["E3", "G6.b", "G6.c"],
+  "_generated": "2026-05-25",
+
+  "_mode_3_notes": [
+    "This is the NATIVE Mode-3 probe — not a pivot from Mode-1.",
+    "There is no ivy.xml, no ivysettings.xml, and no <ivy:*> task in build.xml.",
+    "ant.ivyResolveDependencies is unset (false by default); the scanner goes straight to Mode-3.",
+    "Mode-3 fingerprints every binary file under the paths declared by ant.pathIdIncludes.",
+    "lib/ contains five real Maven Central JARs (real SHA1, matchable against Mend KB) and",
+    "three renamed copies covering non-JAR extensions: .war, .zip, .so.",
+    "The renamed files have byte-identical content to the originals so SHA1 is computed correctly,",
+    "but Mend KB lookup will match based on the SHA1 of the underlying JAR content.",
+    "whitesource.config sets ant.pathIdIncludes=lib.* — exercises G6.c wildcard filter.",
+    "build.xml declares <path id='lib.cp'><fileset dir='lib' includes='*.jar'/></path> — exercises E3.",
+    "lib/ contains .jar/.war/.zip/.so extensions — exercises G6.b mixed-extension scan."
+  ],
+
+  "schema_version": "1.0",
+  "pm": "ant",
+  "source_file": "build.xml",
+  "root": {
+    "name": "ant-no-ivy-mode3-fallback-20260525-152910",
+    "version": "0.1.0",
+    "dependencies": [
+      "commons-io-2.11.0.jar",
+      "commons-lang3-3.12.0.jar",
+      "commons-logging-1.2.jar",
+      "junit-4.13.2.jar",
+      "slf4j-api-1.7.36.jar",
+      "test-archive.war",
+      "test-archive.zip",
+      "test-binary.so"
+    ]
+  },
+  "packages": {
+    "commons-io-2.11.0.jar": {
+      "version": "2.11.0",
+      "source": "local",
+      "source_detail": {"path": "lib/commons-io-2.11.0.jar"},
+      "group": "main",
+      "hashes": ["a2503f302b11ebde7ebc3df41daebe0e4eea3689"],
+      "dependencies": []
+    },
+    "commons-lang3-3.12.0.jar": {
+      "version": "3.12.0",
+      "source": "local",
+      "source_detail": {"path": "lib/commons-lang3-3.12.0.jar"},
+      "group": "main",
+      "hashes": ["c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e"],
+      "dependencies": []
+    },
+    "commons-logging-1.2.jar": {
+      "version": "1.2",
+      "source": "local",
+      "source_detail": {"path": "lib/commons-logging-1.2.jar"},
+      "group": "main",
+      "hashes": ["4bfc12adfe4842bf07b657f0369c4cb522955686"],
+      "dependencies": []
+    },
+    "junit-4.13.2.jar": {
+      "version": "4.13.2",
+      "source": "local",
+      "source_detail": {"path": "lib/junit-4.13.2.jar"},
+      "group": "main",
+      "hashes": ["8ac9e16d933b6fb43bc7f576336b8f4d7eb5ba12"],
+      "dependencies": []
+    },
+    "slf4j-api-1.7.36.jar": {
+      "version": "1.7.36",
+      "source": "local",
+      "source_detail": {"path": "lib/slf4j-api-1.7.36.jar"},
+      "group": "main",
+      "hashes": ["6c62681a2f655b49963a5983b8b0950a6120ae14"],
+      "dependencies": []
+    },
+    "test-archive.war": {
+      "version": "2.11.0",
+      "source": "local",
+      "source_detail": {
+        "path": "lib/test-archive.war",
+        "note": "Renamed copy of commons-io-2.11.0.jar. SHA1 is byte-identical to commons-io-2.11.0.jar. Mend KB lookup will resolve to commons-io if it matches on SHA1."
+      },
+      "group": "main",
+      "hashes": ["a2503f302b11ebde7ebc3df41daebe0e4eea3689"],
+      "dependencies": []
+    },
+    "test-archive.zip": {
+      "version": "1.2",
+      "source": "local",
+      "source_detail": {
+        "path": "lib/test-archive.zip",
+        "note": "Renamed copy of commons-logging-1.2.jar. SHA1 is byte-identical to commons-logging-1.2.jar. Mend KB lookup may resolve to commons-logging if it matches on SHA1."
+      },
+      "group": "main",
+      "hashes": ["4bfc12adfe4842bf07b657f0369c4cb522955686"],
+      "dependencies": []
+    },
+    "test-binary.so": {
+      "version": "1.7.36",
+      "source": "local",
+      "source_detail": {
+        "path": "lib/test-binary.so",
+        "note": "Renamed copy of slf4j-api-1.7.36.jar. SHA1 is byte-identical to slf4j-api-1.7.36.jar. The primary assertion is that the file was detected (present in tree) and SHA1 was computed. KB match is incidental."
+      },
+      "group": "main",
+      "hashes": ["6c62681a2f655b49963a5983b8b0950a6120ae14"],
+      "dependencies": []
+    }
+  },
+  "project_metadata": {
+    "groups": ["main"]
+  },
+  "warnings": [
+    "Non-JAR files (test-archive.war, test-archive.zip, test-binary.so) contain real JAR bytes — they will have SHA1s that match Maven Central artifacts. Mend may report them under the original artifact name rather than the filename. Downstream comparator should treat these as 'detected with any name, correct SHA1' rather than requiring exact filename match.",
+    "ant.pathIdIncludes=lib.* is set in whitesource.config. If the UA version being tested does not honor pathIdIncludes for Mode-3, all lib/ files will still be detected but the path-ID filter assertion (G6.c) cannot be validated in isolation.",
+    "Ant itself is not pinnable via install-tool in .whitesource — only java is pinned. The Ant binary version is operator-supplied. See README.md ## Mend config."
+  ]
+}
